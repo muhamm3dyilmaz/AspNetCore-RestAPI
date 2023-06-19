@@ -6,23 +6,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entities.Exceptions;
 
 namespace Services
 {
     public class BookManager : IBookService
     {
         private readonly IRepositoryManager _manager;
+        private readonly ILoggerService _logger;
 
-        public BookManager(IRepositoryManager manager)
+        public BookManager(IRepositoryManager manager, ILoggerService logger)
         {
             _manager = manager;
+            _logger = logger;
         }
 
         public Book CreateBook(Book book)
-        {
-            if(book is null)
-                throw new ArgumentNullException(nameof(book));
-            
+        {   
             _manager.BookRepo.CreateOneBook(book);
             _manager.Save();
             return book;
@@ -32,8 +32,10 @@ namespace Services
         {
             var entity = _manager.BookRepo.GetBookById(id, trackChanges);
 
-            if(entity is null)
-                throw new Exception($"Book with id: {id} could not found.");
+            if (entity is null)
+            {
+                throw new BookNotFoundException(id);
+            }
 
             _manager.BookRepo.DeleteOneBook(entity);
             _manager.Save();
@@ -46,17 +48,25 @@ namespace Services
 
         public Book GetBookById(int id, bool trackChanges)
         {
-            return _manager.BookRepo.GetBookById(id,trackChanges);
+            var entity = _manager.BookRepo.GetBookById(id,trackChanges);
+
+            //Entities katmanında yazdığımız exception kullanıyoruz
+            if (entity is null)
+            {
+                throw new BookNotFoundException(id);
+            }
+
+            return entity;
         }
 
         public void UpdateBook(int id, bool trackChanges, Book book)
         {
             var entity = _manager.BookRepo.GetBookById(id, trackChanges);
-            if (entity is null)
-                throw new Exception($"Book with id: {id} could not found.");
 
-            if (book is null)
-                throw new ArgumentNullException(nameof(book));
+            if (entity is null)
+            {
+                throw new BookNotFoundException(id);
+            }
 
             entity.Title = book.Title;
             entity.Price = book.Price;

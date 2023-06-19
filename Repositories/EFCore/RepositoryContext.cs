@@ -16,6 +16,8 @@ namespace Repositories.EFCore
         {
 
         }
+        
+        //DbSet ile modelden verilen tablo adına veri aktarılır.
         public DbSet<Book> Books { get; set; }
 
         //Tip Konfigürasyonunu Veritabanına Yansıtır
