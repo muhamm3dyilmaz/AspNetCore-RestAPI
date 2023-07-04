@@ -1,4 +1,5 @@
 using EFCoreSample.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Repositories.EFCore;
@@ -10,9 +11,22 @@ var builder = WebApplication.CreateBuilder(args);
 LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
 // Add services to the container.
-builder.Services.AddControllers()
+builder.Services.AddControllers(config =>
+{
+    //api nin içerik pazarlýðýný açar
+    config.RespectBrowserAcceptHeader = true;
+    //api nin kabul etmediði içerikte bir yapý gelirse xml-csv gibi kabul eder
+    config.ReturnHttpNotAcceptable = true;
+})
+    //içerik pazarlýðýnda xml kullanýmýna izin verir
+    .AddXmlDataContractSerializerFormatters()
     .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly)
     .AddNewtonsoftJson();
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -22,6 +36,7 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigurationLoggerManager();
+builder.Services.AddAutoMapper(typeof(Program));
 
 
 var app = builder.Build();
