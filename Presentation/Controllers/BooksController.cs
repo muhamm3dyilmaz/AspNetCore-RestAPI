@@ -3,6 +3,7 @@ using Entities.Exceptions;
 using Entities.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.ActionFilters;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
-    
+    [ServiceFilter(typeof(LogFilterAttribute))]
     [ApiController]
     [Route("api/books")]
     public class BooksController : ControllerBase
@@ -26,12 +27,12 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllBooks()
+        public async Task<IActionResult> GetAllBooks()
         {
 
             try
             {
-                var books = _manager.BookService.GetAllBooks(false);
+                var books = await _manager.BookService.GetAllBooksAsync(false);
                 return Ok(books); //200
             }
 
@@ -43,52 +44,52 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetBookById([FromRoute(Name = "id")] int id)
+        public async Task<IActionResult> GetBookById([FromRoute(Name = "id")] int id)
         {
-            var book = _manager.BookService.GetBookById(id, false);
+            var book = await _manager.BookService.GetBookByIdAsync(id, false);
             return Ok(book); //200
         }
 
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPost]
-        public IActionResult CreateBook([FromBody] BookDtoForInsertion bookDto)
+        public async Task<IActionResult> CreateBook([FromBody] BookDtoForInsertion bookDto)
         {
-            if (bookDto is null)
-                return BadRequest(); //400
-
-            if (!ModelState.IsValid)
-                return UnprocessableEntity(ModelState);
+            //ValidationFilterAttribute'ü hazırlayarak bu sorgulara ait ihtiyacımızı karşıladık.
+            //if (bookDto is null)
+            //    return BadRequest(); //400
+            //if (!ModelState.IsValid)
+            //    return UnprocessableEntity(ModelState); //422
 
             //Kitabı repoya ekler
-           var book = _manager.BookService.CreateBook(bookDto);
+            var book = await _manager.BookService.CreateBookAsync(bookDto);
 
             return StatusCode(201, bookDto); //201
         }
 
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPut("{id:int}")]
-        public IActionResult UpdateBookById([FromRoute] int id, [FromBody] BookDtoForUpdate bookDto)
+        public async Task<IActionResult> UpdateBookById([FromRoute] int id, [FromBody] BookDtoForUpdate bookDto)
         {
-            if(!ModelState.IsValid)
-                return UnprocessableEntity(ModelState);
-            _manager.BookService.UpdateBook(id, false, bookDto);
+            await _manager.BookService.UpdateBookAsync(id, false, bookDto);
             return NoContent();
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteBookById([FromRoute] int id)
+        public async Task<IActionResult> DeleteBookById([FromRoute] int id)
         {
-            _manager.BookService.DeleteBook(id, false);
+            await _manager.BookService.DeleteBookAsync(id, false);
             return NoContent(); //204
 
         }
 
         [HttpPatch("{id:int}")]
-        public IActionResult PatchBookById([FromRoute(Name = "id")] int id,
+        public async Task<IActionResult> PatchBookById([FromRoute(Name = "id")] int id,
             [FromBody] JsonPatchDocument<BookDtoForUpdate> patchBook)
         {
             if (patchBook is null)
                 return BadRequest();
 
-            var result = _manager.BookService.GetBookForPatch(id, false);
+            var result = await _manager.BookService.GetBookForPatchAsync(id, false);
 
 
             patchBook.ApplyTo(result.bookDtoForUpdate,ModelState);
@@ -98,7 +99,7 @@ namespace Presentation.Controllers
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
 
-            _manager.BookService.SaveChangesForPatch(result.bookDtoForUpdate, result.book);
+            await _manager.BookService.SaveChangesForPatchAsync(result.bookDtoForUpdate, result.book);
 
             return NoContent(); //204
         }

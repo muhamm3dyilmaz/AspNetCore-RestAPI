@@ -3,6 +3,7 @@ using Repositories.Contracts;
 using Repositories.EFCore;
 using Services.Contracts;
 using Services;
+using Presentation.ActionFilters;
 
 namespace EFCoreSample.Extensions
 {
@@ -33,6 +34,12 @@ namespace EFCoreSample.Extensions
         public static void ConfigurationLoggerManager(this IServiceCollection services)
         {
             services.AddSingleton<ILoggerService, LoggerManager>();
+        }
+
+        public static void ConfigureActionFilters(this IServiceCollection services)
+        {
+            services.AddScoped<ValidationFilterAttribute>();
+            services.AddSingleton<LogFilterAttribute>();
         }
 
     }

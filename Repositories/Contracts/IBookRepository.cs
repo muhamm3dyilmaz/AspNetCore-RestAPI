@@ -12,8 +12,8 @@ namespace Repositories.Contracts
    //kısaca işlemleri sınıflara göre özelleştirmiş olduk
     public interface IBookRepository : IRepositoryBase<Book>
     {
-        IQueryable<Book> GetAllBooks(bool trackChanges);
-        Book GetBookById(int id, bool trackChanges);
+        Task<IEnumerable<Book>> GetAllBooksAsync(bool trackChanges);
+        Task<Book> GetBookByIdAsync(int id, bool trackChanges);
         void CreateOneBook(Book book);
         void UpdateOneBook(Book book);
         void DeleteOneBook(Book book);

@@ -28,9 +28,9 @@ namespace Repositories.EFCore
 
         /*SaveChanges ı ayrı yapmamızın sebebi IBookRepository ve BookRepository de sadece
         CRUD işlemlerini yapabilmemizdir bu yüzden bir repo manager e ihtiyaç duyarız */
-        public void Save()
+        public async Task SaveAsync()
         {
-            _repositoryContext.SaveChanges();
+            await _repositoryContext.SaveChangesAsync();
         }
     }
 }
