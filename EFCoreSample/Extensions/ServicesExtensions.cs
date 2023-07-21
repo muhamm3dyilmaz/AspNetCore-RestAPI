@@ -4,6 +4,7 @@ using Repositories.EFCore;
 using Services.Contracts;
 using Services;
 using Presentation.ActionFilters;
+using Entities.DataTransferObjects;
 
 namespace EFCoreSample.Extensions
 {
@@ -40,6 +41,24 @@ namespace EFCoreSample.Extensions
         {
             services.AddScoped<ValidationFilterAttribute>();
             services.AddSingleton<LogFilterAttribute>();
+        }
+
+        public static void ConfigureCors(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithExposedHeaders("X-Pagination")
+                );
+            });
+        }
+
+        public static void ConfigureDataShaper(this IServiceCollection services)
+        {
+            services.AddScoped<IDataShaper<BookDto>, DataShaper<BookDto>>();
         }
 
     }
