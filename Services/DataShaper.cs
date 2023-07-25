@@ -1,4 +1,5 @@
-﻿using Services.Contracts;
+﻿using Entities.Models;
+using Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -20,14 +21,14 @@ namespace Services
         }
 
         //ShapedData listesi döner
-        public IEnumerable<ExpandoObject> ShapeData(IEnumerable<T> entities, string fieldsString)
+        public IEnumerable<ShapedEntity> ShapeData(IEnumerable<T> entities, string fieldsString)
         {
             var requiredFields = GetRequiredProperties(fieldsString);
             return FetchData(entities, requiredFields);
         }
 
         //ShapedData objesi döner
-        public ExpandoObject ShapeData(T entity, string fieldsString)
+        public ShapedEntity ShapeData(T entity, string fieldsString)
         {
             var requiredProperties = GetRequiredProperties(fieldsString);
             return FetchDataForEntity(entity, requiredProperties);
@@ -65,24 +66,30 @@ namespace Services
 
         }
 
-        private ExpandoObject FetchDataForEntity(T entity, IEnumerable<PropertyInfo> requiredProperties)
+        private ShapedEntity FetchDataForEntity(T entity, IEnumerable<PropertyInfo> requiredProperties)
         {
-            var shapedObject = new ExpandoObject();
+            var shapedObject = new ShapedEntity();
 
             foreach (var property in requiredProperties)
             {
                 var objectPropetyValue = property.GetValue(entity);
 
-                shapedObject.TryAdd(property.Name, objectPropetyValue);
+                shapedObject.Entity.TryAdd(property.Name, objectPropetyValue);
             }
+
+            //varlığın Id lerini alır
+            var objectProperty = entity.GetType().GetProperty("Id");
+
+            //varlığın alınan Id lerini shapedObject in Id alanına atar
+            shapedObject.Id = (int)objectProperty.GetValue(entity);
 
             return shapedObject;
         }
 
-        private IEnumerable<ExpandoObject> FetchData(IEnumerable<T> entities, 
+        private IEnumerable<ShapedEntity> FetchData(IEnumerable<T> entities, 
             IEnumerable<PropertyInfo> requiredProperties)
         {
-            var shapedData = new List<ExpandoObject>();
+            var shapedData = new List<ShapedEntity>();
 
             foreach (var entity in entities)
             {
