@@ -28,14 +28,24 @@ namespace Presentation.Controllers
             _manager = manager;
         }
 
+        [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         [HttpGet]
         public async Task<IActionResult> GetAllBooksAsync([FromQuery] BookParameters bookParameters)
         {
-            var pagedResult = await _manager.BookService.GetAllBooksAsync(bookParameters, false);
+            var linkParameters = new LinkParameters()
+            {
+                BookParameters = bookParameters,
+                HttpContext = HttpContext
+            };
 
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+            //linkResponse eski adı pagedResult
+            var result = await _manager.BookService.GetAllBooksAsync(linkParameters, false);
 
-            return Ok(pagedResult.books); //200
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.metaData));
+
+            return result.linkResponse.HasLink ?
+                Ok(result.linkResponse.LinkedEntities) :
+                Ok(result.linkResponse.ShapedEntities);
         }
 
         [HttpGet("{id:int}")]

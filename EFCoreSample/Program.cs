@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NLog;
 using Presentation.ActionFilters;
 using Repositories.EFCore;
+using Services;
 using Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,8 +22,8 @@ builder.Services.AddControllers(config =>
 })
     //içerik pazarlýðýnda xml kullanýmýna izin verir
     .AddXmlDataContractSerializerFormatters()
-    .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly)
-    .AddNewtonsoftJson();
+    .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
+    //.AddNewtonsoftJson();
 
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -42,6 +43,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureActionFilters();
 builder.Services.ConfigureCors();
 builder.Services.ConfigureDataShaper();
+builder.Services.AddCustomMediaTypes();
+builder.Services.ConfigureBookLinks();
 
 
 var app = builder.Build();
