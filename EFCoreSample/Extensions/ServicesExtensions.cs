@@ -81,6 +81,10 @@ namespace EFCoreSample.Extensions
                 {
                     systemTextJsonOutputFormatter.SupportedMediaTypes
                     .Add("application/vnd.bookstore.hateoas+json");
+
+                    //root documentation için ekledik
+                    systemTextJsonOutputFormatter.SupportedMediaTypes
+                    .Add("application/vnd.bookstore.apiroot+json");
                 }
 
                 //XML media typeler için

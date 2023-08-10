@@ -1,16 +1,16 @@
 ﻿using Entities.DataTransferObjects;
-using Entities.Exceptions;
-using Entities.Models;
+using System.Text.Json;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
 using Services.Contracts;
+using Entities.Exceptions;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 
@@ -28,8 +28,9 @@ namespace Presentation.Controllers
             _manager = manager;
         }
 
+        [HttpHead]
+        [HttpGet(Name = "GetAllBooksAsync")]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
-        [HttpGet]
         public async Task<IActionResult> GetAllBooksAsync([FromQuery] BookParameters bookParameters)
         {
             var linkParameters = new LinkParameters()
@@ -38,7 +39,6 @@ namespace Presentation.Controllers
                 HttpContext = HttpContext
             };
 
-            //linkResponse eski adı pagedResult
             var result = await _manager.BookService.GetAllBooksAsync(linkParameters, false);
 
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.metaData));
@@ -55,8 +55,8 @@ namespace Presentation.Controllers
             return Ok(book); //200
         }
 
+        [HttpPost(Name = "CreateBookAsync")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        [HttpPost]
         public async Task<IActionResult> CreateBookAsync([FromBody] BookDtoForInsertion bookDto)
         {
             //ValidationFilterAttribute'ü hazırlayarak bu sorgulara ait ihtiyacımızı karşıladık.
@@ -71,8 +71,8 @@ namespace Presentation.Controllers
             return StatusCode(201, bookDto); //201
         }
 
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPut("{id:int}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> UpdateBookByIdAsync([FromRoute] int id, [FromBody] BookDtoForUpdate bookDto)
         {
             await _manager.BookService.UpdateBookAsync(id, false, bookDto);
@@ -109,5 +109,12 @@ namespace Presentation.Controllers
             return NoContent(); //204
         }
 
+        //İstediğimiz işlemlerin kulanımına izin verdik
+        [HttpOptions]
+        public IActionResult GetBookOptions()
+        {
+            Response.Headers.Add("Allow", "GET, PUT, POST, DELETE, PATCH, OPTIONS, HEAD");
+            return Ok();
+        }
     }
 }
