@@ -18,5 +18,8 @@ namespace Repositories.Contracts
         void CreateOneBook(Book book);
         void UpdateOneBook(Book book);
         void DeleteOneBook(Book book);
+
+        ////////////// API V2 İÇİN EKLEDİKLERİMİZ ////////////////
+        Task<List<Book>> GetAllBooksAsync(bool trackChanges);
     }
 }

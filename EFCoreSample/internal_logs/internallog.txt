@@ -165,3 +165,41 @@
 2023-08-08 13:48:07.1260 Info Message Template Auto Format enabled
 2023-08-08 13:48:07.2347 Info Registered target NLog.Targets.FileTarget(Name=logfile)
 2023-08-08 13:48:07.2626 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-10 11:09:47.6462 Info Message Template Auto Format enabled
+2023-08-10 11:09:47.7576 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 11:09:47.7895 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-10 11:25:40.6122 Info Message Template Auto Format enabled
+2023-08-10 11:25:40.6992 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 11:25:40.7271 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-10 11:29:29.4771 Info Message Template Auto Format enabled
+2023-08-10 11:29:29.5527 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 11:29:29.5824 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-10 12:11:49.4554 Info Message Template Auto Format enabled
+2023-08-10 12:11:49.5697 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 12:11:49.6029 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-10 12:15:04.7692 Info Message Template Auto Format enabled
+2023-08-10 12:15:04.8570 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 12:15:04.8827 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-10 13:08:45.5126 Info Message Template Auto Format enabled
+2023-08-10 13:08:45.6329 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 13:08:45.6587 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-11 11:04:34.8691 Info Message Template Auto Format enabled
+2023-08-11 11:04:34.9515 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-11 11:04:34.9771 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-11 11:05:13.9191 Info Message Template Auto Format enabled
+2023-08-11 11:05:14.0258 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-11 11:05:14.0505 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-11 11:26:57.9623 Info Message Template Auto Format enabled
+2023-08-11 11:26:58.0665 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-11 11:26:58.1002 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-11 11:35:07.6413 Info Message Template Auto Format enabled
+2023-08-11 11:35:07.7539 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-11 11:35:07.7875 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-14 10:00:48.4087 Info Message Template Auto Format enabled
+2023-08-14 10:00:48.5182 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-14 10:00:48.5607 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-15 10:03:29.0614 Info Message Template Auto Format enabled
+2023-08-15 10:03:29.2826 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-15 10:03:29.3676 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-08-15 10:21:25.4676 Info AppDomain Shutting down. LogFactory closing...
+2023-08-15 10:21:25.4917 Info LogFactory has been closed.

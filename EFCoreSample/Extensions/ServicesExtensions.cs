@@ -7,6 +7,9 @@ using Presentation.ActionFilters;
 using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.Versioning;
+using Presentation.Controllers;
+using AspNetCoreRateLimit;
 
 namespace EFCoreSample.Extensions
 {
@@ -77,7 +80,7 @@ namespace EFCoreSample.Extensions
                 .OfType<SystemTextJsonOutputFormatter>()?
                 .FirstOrDefault();
 
-                if(systemTextJsonOutputFormatter is not null)
+                if (systemTextJsonOutputFormatter is not null)
                 {
                     systemTextJsonOutputFormatter.SupportedMediaTypes
                     .Add("application/vnd.bookstore.hateoas+json");
@@ -93,7 +96,7 @@ namespace EFCoreSample.Extensions
                 .OfType<XmlDataContractSerializerOutputFormatter>()?
                 .FirstOrDefault();
 
-                if(systemTextXmlOutputFormatter is not null)
+                if (systemTextXmlOutputFormatter is not null)
                 {
                     systemTextXmlOutputFormatter.SupportedMediaTypes
                     .Add("application/vnd.bookstore.hateoas+xml");
@@ -105,6 +108,60 @@ namespace EFCoreSample.Extensions
         public static void ConfigureBookLinks(this IServiceCollection services)
         {
             services.AddScoped<IBookLinks, BookLinks>();
+        }
+
+        public static void ConfigureVersioning(this IServiceCollection services)
+        {
+            services.AddApiVersioning(opt =>
+            {
+                opt.ReportApiVersions = true;
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.DefaultApiVersion = new ApiVersion(1, 0);
+                opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
+                //Convesion tanımı (controller'a api version yazmaya gerek kalmaz)
+                opt.Conventions.Controller<BooksController>().HasApiVersion(new ApiVersion(1, 0));
+                //deprecated conversion tanımı (controller'a apiyi kullanıma kapatmak için deprecated yazmaya gerek kalmaz)
+                opt.Conventions.Controller<BooksControllerV2>().HasDeprecatedApiVersion(new ApiVersion(2, 0));
+            });
+
+        }
+
+        public static void ConfigureResponseCaching(this IServiceCollection services)
+        {
+            services.AddResponseCaching();
+        }
+
+        //Marvin cache headers paketi kurulup yapılmalı
+        public static void ConfigureHttpCacheHeaders(this IServiceCollection services)
+        {
+            services.AddHttpCacheHeaders(expirationOpt =>
+            {
+                expirationOpt.MaxAge = 100;
+                expirationOpt.CacheLocation = Marvin.Cache.Headers.CacheLocation.Private;
+            });
+        }
+
+        //önce aspnetcore rate limit kütüphanesini kur
+        public static void ConfigureRateLimitingOptions(this IServiceCollection services)
+        {
+            var rateLimitRules = new List<RateLimitRule>() { 
+                new RateLimitRule() 
+                { 
+                    Endpoint = "*",
+                    Limit = 3,
+                    Period = "1m"
+                }
+            };
+
+            services.Configure<IpRateLimitOptions>(opt => 
+            { 
+                opt.GeneralRules = rateLimitRules;
+            });
+
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
         }
 
     }

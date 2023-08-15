@@ -23,5 +23,8 @@ namespace Services.Contracts
         //tuple ifadesi oluşturduk
         Task<(BookDtoForUpdate bookDtoForUpdate, Book book)> GetBookForPatchAsync(int id, bool trackChanges);
         Task SaveChangesForPatchAsync(BookDtoForUpdate bookDtoForUpdate, Book book);
+
+        //////////////////// API V2 İÇİN EKLEDİKLERİMİZ ///////////////////////
+        Task<List<Book>> GetAllBooksAsync(bool trackChanges);
     }
 }

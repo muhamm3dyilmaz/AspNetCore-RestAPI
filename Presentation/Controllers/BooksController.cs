@@ -16,9 +16,12 @@ using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
-    [ServiceFilter(typeof(LogFilterAttribute))]
+    //[ApiVersion("1.0")]
     [ApiController]
     [Route("api/books")]
+    //[Route("api/{v:apiversion}/books")] URL bazlı versiyonlama için
+    [ServiceFilter(typeof(LogFilterAttribute))]
+    //[ResponseCache(CacheProfileName = "5mins")]
     public class BooksController : ControllerBase
     {
         private readonly IServiceManager _manager;
@@ -31,6 +34,7 @@ namespace Presentation.Controllers
         [HttpHead]
         [HttpGet(Name = "GetAllBooksAsync")]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
+        //[ResponseCache(Duration = 60)]
         public async Task<IActionResult> GetAllBooksAsync([FromQuery] BookParameters bookParameters)
         {
             var linkParameters = new LinkParameters()
@@ -59,13 +63,6 @@ namespace Presentation.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateBookAsync([FromBody] BookDtoForInsertion bookDto)
         {
-            //ValidationFilterAttribute'ü hazırlayarak bu sorgulara ait ihtiyacımızı karşıladık.
-            //if (bookDto is null)
-            //    return BadRequest(); //400
-            //if (!ModelState.IsValid)
-            //    return UnprocessableEntity(ModelState); //422
-
-            //Kitabı repoya ekler
             var book = await _manager.BookService.CreateBookAsync(bookDto);
 
             return StatusCode(201, bookDto); //201
