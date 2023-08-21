@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using Entities.DataTransferObjects;
+using Entities.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Repositories.Contracts;
 using Services.Contracts;
 using System;
@@ -14,12 +17,24 @@ namespace Services
     {
         private readonly Lazy<IBookService> _bookService;
 
+        private readonly Lazy<IAuthenticationService> _authenticationService;
+
         //Hateoas için dataShaperı silip bookLinksi ekledik
-        public ServiceManager(IRepositoryManager repositoryManager, ILoggerService loggerService, IMapper mapper, 
-            IBookLinks bookLinks)
+        public ServiceManager(IRepositoryManager repositoryManager, 
+            ILoggerService loggerService, 
+            IMapper mapper,
+            IBookLinks bookLinks, 
+            UserManager<User> userManager,
+            IConfiguration configuration)
         {
-            _bookService = new Lazy<IBookService>(() => new BookManager(repositoryManager, loggerService, mapper, bookLinks));
+            _bookService = new Lazy<IBookService>(() => 
+            new BookManager(repositoryManager, loggerService, mapper, bookLinks));
+
+            _authenticationService = new Lazy<IAuthenticationService>(() => 
+            new AuthenticationManager(loggerService, mapper, userManager, configuration));
         }
         public IBookService BookService => _bookService.Value;
+
+        public IAuthenticationService AuthenticationService => _authenticationService.Value;
     }
 }

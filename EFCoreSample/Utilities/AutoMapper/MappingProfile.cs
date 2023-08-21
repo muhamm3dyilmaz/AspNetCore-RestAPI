@@ -11,6 +11,8 @@ namespace EFCoreSample.Utilities.AutoMapper
             CreateMap<Book, BookDto>();
             CreateMap<BookDtoForUpdate, Book>().ReverseMap();
             CreateMap<BookDtoForInsertion, Book>();
+
+            CreateMap<UserForRegistrationDto, User>();
         }
     }
 }
