@@ -12,11 +12,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Presentation.Controllers
 {
     //[ApiVersion("1.0")]
+    //[Authorize] //endpointleri yetkisiz işlemlere karşı korur (401 unauthorized)
     [ApiController]
     [Route("api/books")]
     //[Route("api/{v:apiversion}/books")] URL bazlı versiyonlama için
