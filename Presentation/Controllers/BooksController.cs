@@ -32,6 +32,7 @@ namespace Presentation.Controllers
             _manager = manager;
         }
 
+        /*[Authorize(Roles = "User")] *///rol tabanlı yetkilendirme
         [HttpHead]
         [HttpGet(Name = "GetAllBooksAsync")]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
@@ -53,6 +54,7 @@ namespace Presentation.Controllers
                 Ok(result.linkResponse.ShapedEntities);
         }
 
+        //[Authorize(Roles = "Editor")] //rol tabanlı yetkilendirme
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetBookByIdAync([FromRoute(Name = "id")] int id)
         {
@@ -60,6 +62,7 @@ namespace Presentation.Controllers
             return Ok(book); //200
         }
 
+        /*[Authorize(Roles = "Admin")]*/ //rol tabanlı yetkilendirme
         [HttpPost(Name = "CreateBookAsync")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateBookAsync([FromBody] BookDtoForInsertion bookDto)

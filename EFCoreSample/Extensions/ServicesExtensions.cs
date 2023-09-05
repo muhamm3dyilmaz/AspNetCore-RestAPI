@@ -153,7 +153,7 @@ namespace EFCoreSample.Extensions
                 new RateLimitRule() 
                 { 
                     Endpoint = "*",
-                    Limit = 3,
+                    Limit = 25,
                     Period = "1m"
                 }
             };
