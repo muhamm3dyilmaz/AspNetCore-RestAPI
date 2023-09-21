@@ -22,6 +22,7 @@ namespace Repositories.EFCore
         
         //DbSet ile modelden verilen tablo adına veri aktarılır.
         public DbSet<Book> Books { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         //Tip Konfigürasyonunu Veritabanına Yansıtır
         protected override void OnModelCreating(ModelBuilder modelBuilder)

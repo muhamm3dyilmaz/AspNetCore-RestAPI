@@ -12,6 +12,7 @@ namespace Presentation.Controllers
     //[ApiVersion("2.0", Deprecated = true)]
     [ApiController]
     [Route("api/books")]
+    [ApiExplorerSettings(GroupName = "v2")]
     //[Route("api/{v:apiversion}/books")] URL bazlı versiyonlama için
     [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
     public class BooksControllerV2 :  ControllerBase

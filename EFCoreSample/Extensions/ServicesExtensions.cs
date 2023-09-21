@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
 
 namespace EFCoreSample.Extensions
 {
@@ -128,7 +129,6 @@ namespace EFCoreSample.Extensions
                 //deprecated conversion tanımı (controller'a apiyi kullanıma kapatmak için deprecated yazmaya gerek kalmaz)
                 opt.Conventions.Controller<BooksControllerV2>().HasDeprecatedApiVersion(new ApiVersion(2, 0));
             });
-
         }
 
         public static void ConfigureResponseCaching(this IServiceCollection services)
@@ -207,6 +207,24 @@ namespace EFCoreSample.Extensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                 }
             );
+        }
+
+        public static void ConfigureSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(s =>
+            {
+                s.SwaggerDoc("v1", new OpenApiInfo 
+                {
+                    Title = "BookStore", 
+                    Version = "v1",
+                    //Contact = new OpenApiContact
+                    //{
+                    //    Name = "Muhammed Yılmaz",
+                    //    Email = "mylmz2101@gmail.com",
+                    //}
+                });
+                s.SwaggerDoc("v2", new OpenApiInfo { Title = "BookStore", Version = "v2" });
+            });
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Presentation.Controllers
     //[Authorize] //endpointleri yetkisiz işlemlere karşı korur (401 unauthorized)
     [ApiController]
     [Route("api/books")]
+    [ApiExplorerSettings(GroupName = "v1")]
     //[Route("api/{v:apiversion}/books")] URL bazlı versiyonlama için
     [ServiceFilter(typeof(LogFilterAttribute))]
     //[ResponseCache(CacheProfileName = "5mins")]

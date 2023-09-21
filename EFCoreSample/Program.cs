@@ -35,7 +35,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//versiyonlamadan dolayý swagger error verdi ve yapýlandýrýldý -- ConfigureSwagger
+//builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
 
 //ServicesExtensions içeriðini kullanmak için
@@ -49,6 +50,9 @@ builder.Services.ConfigureDataShaper();
 builder.Services.AddCustomMediaTypes();
 builder.Services.ConfigureBookLinks();
 builder.Services.ConfigureVersioning();
+//swagger yapýlandýrmasý
+builder.Services.ConfigureSwagger();
+//caching
 builder.Services.ConfigureResponseCaching();
 builder.Services.ConfigureHttpCacheHeaders();
 //Rate Limit için
@@ -61,7 +65,6 @@ builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
 
 
-
 var app = builder.Build();
 
 //ExceptionMiddlewareExceptions içindeki kullandýðýmýz servisleri GetRequiredService methodu ile ekledik
@@ -72,7 +75,12 @@ app.ConfigureExceptionHandler(logger);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    //versiyonlama kaynaklý swagger yapýlandýrma
+    app.UseSwaggerUI(s =>
+    {
+        s.SwaggerEndpoint("/swagger/v1/swagger.json", "BookStore v1");
+        s.SwaggerEndpoint("/swagger/v2/swagger.json", "BookStore v2");
+    });
 }
 
 if (app.Environment.IsProduction())
