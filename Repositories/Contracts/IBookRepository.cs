@@ -19,7 +19,11 @@ namespace Repositories.Contracts
         void UpdateOneBook(Book book);
         void DeleteOneBook(Book book);
 
+        //book details için
+        Task<IEnumerable<Book>> GetAllBooksWithDetailsAsync(bool trackChanges);
+
         ////////////// API V2 İÇİN EKLEDİKLERİMİZ ////////////////
         Task<List<Book>> GetAllBooksAsync(bool trackChanges);
+
     }
 }

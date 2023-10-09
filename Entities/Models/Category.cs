@@ -10,5 +10,8 @@ namespace Entities.Models
     {
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
+
+        //Ref: Collection Navigation Property
+        //public ICollection<Book> Books { get; set; }
     }
 }

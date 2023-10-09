@@ -16,9 +16,9 @@ namespace Repositories.EFCore.Config
         {
             builder.HasData
                 (
-                    new Book { Id = 1, Title = "Suç ve Ceza", Price = 25 },
-                    new Book { Id = 2, Title = "II. Dünya Savaşı", Price = 35 },
-                    new Book { Id = 3, Title = "Sarıkamış", Price = 45 }
+                    new Book { Id = 1, Title = "Suç ve Ceza", Price = 25, CategoryId = 1},
+                    new Book { Id = 2, Title = "II. Dünya Savaşı", Price = 35, CategoryId = 2},
+                    new Book { Id = 3, Title = "Sarıkamış", Price = 45, CategoryId = 1}
                 );
         }
     }

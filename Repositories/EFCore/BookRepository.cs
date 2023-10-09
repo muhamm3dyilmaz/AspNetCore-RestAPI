@@ -34,6 +34,12 @@ namespace Repositories.EFCore
             return PagedList<Book>.ToPagedList(books, bookParameters.PageNumber, bookParameters.PageSize);
         }
 
+        public async Task<IEnumerable<Book>> GetAllBooksWithDetailsAsync(bool trackChanges)
+        {
+            //include işlemi ile kitapların relation içinde olduğu kategorileri de listeye ekledik
+            return await _context.Books.Include(b => b.Category).OrderBy(b => b.Id).ToListAsync();
+        }
+
         //API V2 için
         public async Task<List<Book>> GetAllBooksAsync(bool trackChanges)
         {

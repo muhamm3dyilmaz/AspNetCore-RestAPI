@@ -12,26 +12,22 @@ namespace Repositories.EFCore
     {
         //DbContext ten kalıtım alıp kendi oluşturduğumuz RepositoryContext
         private readonly RepositoryContext _repositoryContext;
+        private readonly IBookRepository _bookRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        //Lazy LoadingBookRepository kullanıldığında new işlemi yapar flutterdaki getx obx gibi
-        private readonly Lazy<IBookRepository> _bookRepository;
-        private readonly Lazy<ICategoryRepository> _categoryRepository;
-
-        public RepositoryManager(RepositoryContext repositoryContext)
+        //Newleme işlemi constructor içinde yapıldı -> önceki hali Lazy<>
+        public RepositoryManager(RepositoryContext repositoryContext, IBookRepository bookRepository, 
+            ICategoryRepository categoryRepository)
         {
             _repositoryContext = repositoryContext;
-
-            _bookRepository = new Lazy<IBookRepository>(() => 
-                              new BookRepository(_repositoryContext));
-
-            _categoryRepository = new Lazy<ICategoryRepository>(() =>
-                                  new CategoryRepository(_repositoryContext));
+            _bookRepository = bookRepository;
+            _categoryRepository = categoryRepository;
         }
 
         //New işlemi yapılan BookRepository i yüklemesini yapar
-        public IBookRepository BookRepo => _bookRepository.Value;
+        public IBookRepository BookRepo => _bookRepository;
 
-        public ICategoryRepository CategoryRepo => _categoryRepository.Value;
+        public ICategoryRepository CategoryRepo => _categoryRepository;
 
         /*SaveChanges ı ayrı yapmamızın sebebi IBookRepository ve BookRepository de sadece
         CRUD işlemlerini yapabilmemizdir bu yüzden bir repo manager e ihtiyaç duyarız */

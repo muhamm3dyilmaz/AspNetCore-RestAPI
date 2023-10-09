@@ -2,11 +2,13 @@ using AspNetCoreRateLimit;
 using EFCoreSample.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using NLog;
 using Presentation.ActionFilters;
 using Repositories.EFCore;
 using Services;
 using Services.Contracts;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,9 +27,12 @@ builder.Services.AddControllers(config =>
 })
     //içerik pazarlýðýnda xml kullanýmýna izin verir
     .AddXmlDataContractSerializerFormatters()
-    .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
-    //.AddNewtonsoftJson();
-
+    .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly)
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -63,6 +68,10 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureIdentity();
 //jwt için
 builder.Services.ConfigureJWT(builder.Configuration);
+//RepositoryManager Extension -> RepositoryManagerdaki Lazy'lere gerek kalmadý
+builder.Services.RegisterRepositories();
+//ServiceManager -> ServiceManagerdaki Lazy'lere gerek kalmadý
+builder.Services.RegisterServices();
 
 
 var app = builder.Build();

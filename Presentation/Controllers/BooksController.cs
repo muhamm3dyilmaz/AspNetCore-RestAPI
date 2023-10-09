@@ -63,6 +63,12 @@ namespace Presentation.Controllers
             return Ok(book); //200
         }
 
+        [HttpGet("details")]
+        public async Task<IActionResult> GetAllBooksWithDetailsAsync()
+        {
+            return Ok(await _manager.BookService.GetAllBooksWithDetailsAsync(false));
+        }
+
         /*[Authorize(Roles = "Admin")]*/ //rol tabanlı yetkilendirme
         [HttpPost(Name = "CreateBookAsync")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]

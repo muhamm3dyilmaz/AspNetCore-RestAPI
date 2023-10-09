@@ -30,6 +30,9 @@ namespace EFCoreSample.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -39,24 +42,29 @@ namespace EFCoreSample.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Books");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            CategoryId = 1,
                             Price = 25m,
                             Title = "Suç ve Ceza"
                         },
                         new
                         {
                             Id = 2,
+                            CategoryId = 2,
                             Price = 35m,
                             Title = "II. Dünya Savaşı"
                         },
                         new
                         {
                             Id = 3,
+                            CategoryId = 1,
                             Price = 45m,
                             Title = "Sarıkamış"
                         });
@@ -202,22 +210,22 @@ namespace EFCoreSample.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5ecb2c45-468a-4f33-93b2-014b2d8b23ab",
-                            ConcurrencyStamp = "d63db691-7ff0-411a-b7a1-b7b332775ecb",
+                            Id = "e1a1f84a-c7a2-4894-89c3-01c73fd6a628",
+                            ConcurrencyStamp = "7cc451f0-c7bf-4c88-bc01-43823c9008eb",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "7a2e0623-fb53-4872-bc90-f31e41ddf268",
-                            ConcurrencyStamp = "2a5c1c0f-9242-4f47-b424-b4e14bb4e717",
+                            Id = "e67d6b74-b3c3-4df0-aedd-3b92d0ff08ad",
+                            ConcurrencyStamp = "3e598f8f-3f88-44b1-8b70-b9a7510dabe2",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "af5f5359-e908-4796-887e-78cadf797da3",
-                            ConcurrencyStamp = "aaf8d7de-1ed2-4f75-b9f3-34276dea59ca",
+                            Id = "acd8bc78-1028-4ce0-8a47-48c842a997c9",
+                            ConcurrencyStamp = "3d09c027-3a46-43bf-b32a-a927062178b5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -329,6 +337,17 @@ namespace EFCoreSample.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Entities.Models.Book", b =>
+                {
+                    b.HasOne("Entities.Models.Category", "Category")
+                        .WithMany("Books")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -378,6 +397,11 @@ namespace EFCoreSample.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.Category", b =>
+                {
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }
