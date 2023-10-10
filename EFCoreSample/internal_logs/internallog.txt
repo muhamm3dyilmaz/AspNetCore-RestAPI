@@ -411,3 +411,12 @@
 2023-10-09 15:55:20.1934 Info Message Template Auto Format enabled
 2023-10-09 15:55:20.3042 Info Registered target NLog.Targets.FileTarget(Name=logfile)
 2023-10-09 15:55:20.3297 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-10-09 20:05:30.3231 Info Message Template Auto Format enabled
+2023-10-09 20:05:30.4571 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-10-09 20:05:30.4827 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-10-09 20:55:24.3273 Info Message Template Auto Format enabled
+2023-10-09 20:55:24.4165 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-10-09 20:55:24.4456 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
+2023-10-10 11:33:54.1048 Info Message Template Auto Format enabled
+2023-10-10 11:33:54.2636 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-10-10 11:33:54.2881 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=D:\ASP.NET CORE WEB API\bsStoreApp\EFCoreSample\nlog.config
